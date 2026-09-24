@@ -36,8 +36,19 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, string>, IAppl
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        
-        // Applies all entity configurations defined in classes implementing IEntityTypeConfiguration
+
+        builder.Entity<StockTransfer>()
+            .HasOne(st => st.SourceWarehouse)
+            .WithMany()
+            .HasForeignKey(st => st.SourceWarehouseId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<StockTransfer>()
+            .HasOne(st => st.DestinationWarehouse)
+            .WithMany()
+            .HasForeignKey(st => st.DestinationWarehouseId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
