@@ -1235,13 +1235,13 @@ namespace SmartWarehouse.Infrastructure.Migrations
                     b.HasOne("SmartWarehouse.Domain.Entities.Warehouse", "DestinationWarehouse")
                         .WithMany()
                         .HasForeignKey("DestinationWarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SmartWarehouse.Domain.Entities.Warehouse", "SourceWarehouse")
                         .WithMany()
                         .HasForeignKey("SourceWarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("DestinationWarehouse");

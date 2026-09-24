@@ -12,8 +12,8 @@ using SmartWarehouse.Infrastructure.Data;
 namespace SmartWarehouse.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260924001703_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260924002739_InitialCreate4")]
+    partial class InitialCreate4
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -721,56 +721,6 @@ namespace SmartWarehouse.Infrastructure.Migrations
                     b.ToTable("SalesOrderItems");
                 });
 
-            modelBuilder.Entity("SmartWarehouse.Domain.Entities.StockTransfer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CompletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DestinationWarehouseId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<int>("SourceWarehouseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TransferNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DestinationWarehouseId");
-
-                    b.HasIndex("SourceWarehouseId");
-
-                    b.ToTable("StockTransfers");
-                });
-
             modelBuilder.Entity("SmartWarehouse.Domain.Entities.StockTransferItem", b =>
                 {
                     b.Property<int>("Id")
@@ -986,6 +936,56 @@ namespace SmartWarehouse.Infrastructure.Migrations
                     b.ToTable("WarehouseEmployees");
                 });
 
+            modelBuilder.Entity("StockTransfer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DestinationWarehouseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("SourceWarehouseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TransferNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationWarehouseId");
+
+                    b.HasIndex("SourceWarehouseId");
+
+                    b.ToTable("StockTransfers");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("SmartWarehouse.Domain.Entities.Role", null)
@@ -1195,25 +1195,6 @@ namespace SmartWarehouse.Infrastructure.Migrations
                     b.Navigation("SalesOrder");
                 });
 
-            modelBuilder.Entity("SmartWarehouse.Domain.Entities.StockTransfer", b =>
-                {
-                    b.HasOne("SmartWarehouse.Domain.Entities.Warehouse", "DestinationWarehouse")
-                        .WithMany()
-                        .HasForeignKey("DestinationWarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SmartWarehouse.Domain.Entities.Warehouse", "SourceWarehouse")
-                        .WithMany()
-                        .HasForeignKey("SourceWarehouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DestinationWarehouse");
-
-                    b.Navigation("SourceWarehouse");
-                });
-
             modelBuilder.Entity("SmartWarehouse.Domain.Entities.StockTransferItem", b =>
                 {
                     b.HasOne("SmartWarehouse.Domain.Entities.Product", "Product")
@@ -1222,7 +1203,7 @@ namespace SmartWarehouse.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartWarehouse.Domain.Entities.StockTransfer", "StockTransfer")
+                    b.HasOne("StockTransfer", "StockTransfer")
                         .WithMany("Items")
                         .HasForeignKey("StockTransferId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1250,6 +1231,25 @@ namespace SmartWarehouse.Infrastructure.Migrations
                     b.Navigation("User");
 
                     b.Navigation("Warehouse");
+                });
+
+            modelBuilder.Entity("StockTransfer", b =>
+                {
+                    b.HasOne("SmartWarehouse.Domain.Entities.Warehouse", "DestinationWarehouse")
+                        .WithMany()
+                        .HasForeignKey("DestinationWarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SmartWarehouse.Domain.Entities.Warehouse", "SourceWarehouse")
+                        .WithMany()
+                        .HasForeignKey("SourceWarehouseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DestinationWarehouse");
+
+                    b.Navigation("SourceWarehouse");
                 });
 
             modelBuilder.Entity("SmartWarehouse.Domain.Entities.Category", b =>
@@ -1285,11 +1285,6 @@ namespace SmartWarehouse.Infrastructure.Migrations
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("SmartWarehouse.Domain.Entities.StockTransfer", b =>
-                {
-                    b.Navigation("Items");
-                });
-
             modelBuilder.Entity("SmartWarehouse.Domain.Entities.Supplier", b =>
                 {
                     b.Navigation("PurchaseOrders");
@@ -1313,6 +1308,11 @@ namespace SmartWarehouse.Infrastructure.Migrations
                     b.Navigation("Inventories");
 
                     b.Navigation("InventoryMovements");
+                });
+
+            modelBuilder.Entity("StockTransfer", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
