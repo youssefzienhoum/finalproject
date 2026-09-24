@@ -25,7 +25,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasColumnType("decimal(18,2)");
 
         // Concurrency token is configured in BaseEntity via another approach, or we can configure it here
-        builder.Property(p => p.RowVersion)
-            .IsRowVersion();
+ 
     }
 }

@@ -13,6 +13,6 @@ public class InventoryMovementConfiguration : IEntityTypeConfiguration<Inventory
         // Index on Product and Warehouse for fast querying of movement history
         builder.HasIndex(im => new { im.ProductId, im.WarehouseId });
         
-        builder.Property(im => im.RowVersion).IsRowVersion();
+       
     }
 }

@@ -16,6 +16,6 @@ public class PurchaseOrderConfiguration : IEntityTypeConfiguration<PurchaseOrder
         
         builder.HasIndex(po => po.Status);
 
-        builder.Property(po => po.RowVersion).IsRowVersion();
+ 
     }
 }

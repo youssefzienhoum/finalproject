@@ -15,5 +15,5 @@ public abstract class BaseEntity<TKey> where TKey : struct
     /// SQL Server auto-increments this on every UPDATE, and EF Core includes it in the WHERE clause.
     /// If another transaction modified the row, the WHERE won't match, triggering DbUpdateConcurrencyException.
     /// </summary>
-    public byte[] RowVersion { get; set; } = null!;
+   
 }

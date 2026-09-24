@@ -16,6 +16,6 @@ public class SalesOrderConfiguration : IEntityTypeConfiguration<SalesOrder>
 
         builder.HasIndex(so => so.Status);
 
-        builder.Property(so => so.RowVersion).IsRowVersion();
+        
     }
 }
